@@ -2,23 +2,23 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+env:
+    DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+    DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: login Dockerhub
-      env: 
-        DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      
-    - name: Build the Docker image
-      run: docker buid -t cicd-pipeline .
-    - name: Push to Dockerhub
-      run: docker push $DOCKER_USERNAME/cicd-pipeleine:latest
+      - uses: actions/checkout@v3
+      - name: login Dockerhub
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Build the Docker image
+        run: |
+          cd /usr/src/app/
+          docker buid -t cicd-pipeline .
+      - name: Push to Dockerhub
+        run: docker push $DOCKER_USERNAME/cicd-pipeleine:latest
