@@ -17,8 +17,6 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Build the Docker image
-        run: |
-          cd /usr/src/app/
-          docker buid -t cicd-pipeline .
+        run: docker buid -t cicd-pipeline .
       - name: Push to Dockerhub
         run: docker push $DOCKER_USERNAME/cicd-pipeleine:latest
